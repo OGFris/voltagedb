@@ -24,7 +24,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	utils.PanicErr(err)
 	var player db.Player
 
-	err = db.Instance.Preload("bans").First(&player, &db.Player{XUID: xuid}).Error
+	err = db.Instance.Preload("Bans").First(&player, &db.Player{XUID: xuid}).Error
 	if err != nil {
 
 		utils.WriteErr(w, err.Error(), http.StatusNotFound)
