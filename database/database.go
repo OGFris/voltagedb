@@ -2,6 +2,7 @@ package database
 
 import (
 	"github.com/OGFris/voltagedb/utils"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"os"
 	"time"
