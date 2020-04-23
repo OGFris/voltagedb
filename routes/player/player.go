@@ -9,8 +9,7 @@ import (
 )
 
 func Create(w http.ResponseWriter, r *http.Request) {
-	xuid, err := strconv.Atoi(r.PostFormValue("xuid"))
-	utils.PanicErr(err)
+	xuid := r.PostFormValue("xuid")
 	username := r.PostFormValue("username")
 
 	db.Instance.Create(&db.Player{
@@ -20,11 +19,10 @@ func Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func Get(w http.ResponseWriter, r *http.Request) {
-	xuid, err := strconv.Atoi(r.PostFormValue("xuid"))
-	utils.PanicErr(err)
+	xuid := r.PostFormValue("xuid")
 	var player db.Player
 
-	err = db.Instance.Preload("Bans").First(&player, &db.Player{XUID: xuid}).Error
+	err := db.Instance.Preload("Bans").Where("xuid = ?", xuid).Find(&player).Error
 	if err != nil {
 
 		utils.WriteErr(w, err.Error(), http.StatusNotFound)
@@ -35,10 +33,10 @@ func Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func Ban(w http.ResponseWriter, r *http.Request) {
-	xuid, err := strconv.Atoi(r.PostFormValue("xuid"))
-	utils.PanicErr(err)
+	xuid := r.PostFormValue("xuid")
 	hours, err := strconv.Atoi(r.PostFormValue("hours"))
 	utils.PanicErr(err)
+
 	var player db.Player
 
 	err = db.Instance.First(&player, &db.Player{XUID: xuid}).Error
